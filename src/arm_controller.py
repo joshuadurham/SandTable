@@ -6,8 +6,8 @@ from Phidget22.Devices.DigitalInput import *
 ERASE_THR = 'erase.thr'
 
 # acceleration and velocity bounds on stepper motors
-ACC = 1
-MAX_VEL = 3
+ACC = 1.0
+MAX_VEL = 3.0
 
 # conversion factors to get the stepper coordinates in degrees and inches
 # degrees per 1 step of motor
@@ -76,6 +76,19 @@ def init_arm():
 def move_arm_to_position(theta, rho):
     curr_target_pos_r = theta / (2 * math.pi/360)
     curr_target_pos_p = rho * JOINT_LENGTH_P
+    curr_r_pos = stepper_r.getPosition()
+    curr_p_pos = stepper_p.getPosition()
+
+    # Adjust the max velocity of each joint in order to syncronize their motion and 
+    # have both joints reach their target positions at approximately same time
+    r_time_to_goal = abs(curr_target_pos_r - curr_r_pos) / MAX_VEL
+    p_time_to_goal = abs(curr_target_pos_p - curr_p_pos) / MAX_VEL
+
+    if r_time_to_goal > p_time_to_goal:
+        stepper_p.setVelocityLimit(MAX_VEL * (p_time_to_goal / r_time_to_goal))
+    else:
+        stepper_r.setVelocityLimit(MAX_VEL * (r_time_to_goal / p_time_to_goal))
+
     stepper_r.setTargetPosition(curr_target_pos_r)
     stepper_p.setTargetPosition(curr_target_pos_p)
     print(curr_target_pos_p)
@@ -88,6 +101,9 @@ def move_arm_to_position(theta, rho):
         curr_p_pos = stepper_p.getPosition()
         r_pos_diff = abs(curr_target_pos_r - curr_r_pos)
         p_pos_diff = abs(curr_target_pos_p - curr_p_pos)
+    
+    stepper_p.setVelocityLimit(MAX_VEL)
+    stepper_r.setVelocityLimit(MAX_VEL)
     
 def get_float(float_str):
     try:

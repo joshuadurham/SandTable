@@ -13,7 +13,6 @@ The internal table mechanism is an RP robotic arm controlled by a Raspberry Pi a
 The frame of the table is a basic [Ikea Vittsjö](https://www.ikea.com/us/en/p/vittsjoe-coffee-table-black-brown-glass-80213309/) coffee table modified with a custom laser-cut RP robotic arm and mounting plates.  Two NEMA stepper motors drive each of the robot joints, and the end effector of the robot holds a strong neodymium magnet to attract and control the position of a steel ball bearing held on the sand surface above.  A ring of addressable RGBW LEDs wraps around the table and is controlled via GPIO pins on the Pi.
 
 ## TODO
-- Motion profiling
 - Implement Google Home Connectivity
 - LED Light Ring Control
 - Automated Theta Rho file generation
