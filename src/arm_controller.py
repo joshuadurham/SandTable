@@ -129,6 +129,7 @@ def run_arm():
     init_arm()
     os.chdir("../theta_rho")
     # just loop through the files in the thr directory in a random shuffled order
+    follow_theta_rho_trajectory(ERASE_THR)
     while(True):
         thr_files = glob.glob('*.thr')
         random.shuffle(thr_files)
