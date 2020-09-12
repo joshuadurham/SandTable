@@ -84,9 +84,9 @@ def move_arm_to_position(theta, rho):
     r_time_to_goal = abs(curr_target_pos_r - curr_r_pos) / MAX_VEL
     p_time_to_goal = abs(curr_target_pos_p - curr_p_pos) / MAX_VEL
 
-    if r_time_to_goal > p_time_to_goal:
+    if r_time_to_goal > p_time_to_goal and r_time_to_goal != 0:
         stepper_p.setVelocityLimit(MAX_VEL * (p_time_to_goal / r_time_to_goal))
-    else:
+    elif p_time_to_goal != 0:
         stepper_r.setVelocityLimit(MAX_VEL * (r_time_to_goal / p_time_to_goal))
 
     stepper_r.setTargetPosition(curr_target_pos_r)
@@ -127,7 +127,7 @@ def follow_theta_rho_trajectory(thr_file):
 
 def run_arm():
     init_arm()
-    os.chdir("../theta_rho")
+    os.chdir("/home/pi/SandTable/theta_rho")
     # just loop through the files in the thr directory in a random shuffled order
     while(True):
         thr_files = glob.glob('*.thr')
