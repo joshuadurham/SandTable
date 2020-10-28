@@ -6,8 +6,8 @@ from Phidget22.Devices.DigitalInput import *
 ERASE_THR = 'erase.thr'
 
 # acceleration and velocity bounds on stepper motors
-ACC = 1.0
-MAX_VEL = 3.0
+ACC = 3.0
+MAX_VEL = 8.0
 
 # conversion factors to get the stepper coordinates in degrees and inches
 # degrees per 1 step of motor
@@ -46,6 +46,7 @@ def init_arm():
     stepper_r.openWaitForAttachment(5000)
     stepper_p.openWaitForAttachment(5000)
     limit_switch.openWaitForAttachment(5000)
+    stepper_r.setCurrentLimit(2.0)
     stepper_r.setRescaleFactor((1.0/16.0) * (STEP_ANGLE/R_JOINT_RATIO))
     stepper_p.setRescaleFactor((1.0/16.0) * (STEP_ANGLE/DEG_PER_IN_P))
     stepper_r.setAcceleration(ACC)
